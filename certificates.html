@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MD Sanowar Hossain - Network Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #020617;       
+      --card-bg: #0f172a;  
+      --accent: #22c55e;   
+      --accent2: #0ea5e9;  
+      --accent-soft: rgba(34, 197, 94, 0.1);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-soft: #1e293b;
+      --radius-lg: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      padding: 24px 16px 40px;
+      display: flex;
+      justify-content: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Background Grid */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(30, 41, 59, 0.5) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30, 41, 59, 0.5) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+      -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1100px;
+    }
+
+    /* --- Header --- */
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent2);
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 99px;
+      padding: 6px 12px;
+      border: 1px solid rgba(14, 165, 233, 0.3);
+      backdrop-filter: blur(4px);
+      margin-bottom: 16px;
+      box-shadow: 0 0 15px rgba(14, 165, 233, 0.2);
+    }
+
+    .eyebrow-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent2);
+      box-shadow: 0 0 8px var(--accent2);
+      animation: pulse 2s infinite;
+    }
+
+    h1 {
+      font-size: clamp(28px, 5vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(to right, #fff, #cbd5e1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* --- Grid --- */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      animation: slideUp 0.8s ease-out;
+    }
+
+    @media (min-width: 700px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* --- Dynamic Card --- */
+    .card {
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    /* 1. Dynamic Glow on Hover */
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(14, 165, 233, 0.6);
+      box-shadow: 0 15px 40px -5px rgba(14, 165, 233, 0.15), 0 0 15px rgba(14, 165, 233, 0.1);
+    }
+
+    /* 2. The "Scanner" Shine Effect */
+    .card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -150%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.05),
+        rgba(255, 255, 255, 0.05),
+        transparent
+      );
+      transform: skewX(-20deg);
+      transition: none; /* Reset transition */
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .card:hover::after {
+      left: 150%;
+      transition: 0.7s ease-in-out; /* Speed of the shine */
+    }
+
+    /* Specific Glow Colors per type */
+    .card[data-type="soft"]:hover {
+      border-color: rgba(192, 132, 252, 0.6);
+      box-shadow: 0 15px 40px -5px rgba(192, 132, 252, 0.15), 0 0 15px rgba(192, 132, 252, 0.1);
+    }
+    .card[data-type="tool"]:hover {
+      border-color: rgba(251, 191, 36, 0.6);
+      box-shadow: 0 15px 40px -5px rgba(251, 191, 36, 0.15), 0 0 15px rgba(251, 191, 36, 0.1);
+    }
+
+    /* Pill / Badge */
+    .pill {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      border-radius: 99px;
+      padding: 4px 10px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    
+    /* 3. Pulsing LED Effect */
+    .pill::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      background: currentColor;
+      border-radius: 50%;
+      box-shadow: 0 0 8px currentColor;
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    .title {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.4;
+      margin-bottom: 4px;
+      color: #fff;
+    }
+
+    .provider {
+      font-size: 13px;
+      color: var(--accent2);
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .description {
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.6;
+      flex-grow: 1;
+      margin-bottom: 16px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .tag {
+      font-size: 11px;
+      color: var(--text-muted);
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid rgba(255,255,255,0.05);
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: 0.2s;
+    }
+    
+    .card:hover .tag {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.1);
+      color: #e2e8f0;
+    }
+
+    .card-footer {
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px dashed var(--border-soft);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      color: var(--text-main);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 99px;
+      border: 1px solid var(--border-soft);
+      text-decoration: none;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      border-color: var(--accent2);
+      background: rgba(14, 165, 233, 0.1);
+      color: var(--accent2);
+      box-shadow: 0 0 10px rgba(14, 165, 233, 0.2);
+    }
+
+    .status-text {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .status-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--text-muted);
+    }
+
+    /* Colors for Soft Skills & Tools */
+    .card[data-type="soft"] .pill { color: #c084fc; background: rgba(192, 132, 252, 0.1); border-color: rgba(192, 132, 252, 0.2); }
+    .card[data-type="tool"] .pill { color: #fbbf24; background: rgba(251, 191, 36, 0.1); border-color: rgba(251, 191, 36, 0.2); }
+    
+    /* Button Hover Colors per type */
+    .card[data-type="soft"] .btn:hover { border-color: #c084fc; color: #c084fc; background: rgba(192, 132, 252, 0.1); box-shadow: 0 0 10px rgba(192, 132, 252, 0.2); }
+    .card[data-type="tool"] .btn:hover { border-color: #fbbf24; color: #fbbf24; background: rgba(251, 191, 36, 0.1); box-shadow: 0 0 10px rgba(251, 191, 36, 0.2); }
+
+
+    /* Animations */
+    @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    .footer-note {
+      margin-top: 60px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--border-soft);
+    }
+  </style>
+</head>
+<body>
+
+  <main class="page">
+    
+    <header class="header">
+      <div class="eyebrow">
+        <span class="eyebrow-dot"></span>
+        <span>MD Sanowar Hossain</span>
+      </div>
+      <h1>Certificates & Credentials</h1>
+      <p class="subtitle">
+        Verified technical certifications in Network Engineering, Routing, Switching, and Professional Development.
+      </p>
+    </header>
+
+    <div class="grid">
+      
+      <!-- CCNA -->
+      <article class="card" data-type="net">
+        <div class="pill">Networking</div>
+        <h2 class="title">Cisco Certified Network Associate (CCNA)</h2>
+        <div class="provider">PeopleNTech Institute of IT</div>
+        <div class="meta">Sep 2025 – Nov 2025 · 60 Hours</div>
+        <p class="description">
+          Core routing & switching. Configured OSPF, VLANs, Inter-VLAN routing, NAT, and ACLs on physical Cisco equipment.
+        </p>
+        <div class="tags">
+          <span class="tag">Routing</span>
+          <span class="tag">Switching</span>
+          <span class="tag">Security</span>
+        </div>
+        <div class="card-footer">
+          <a href="#" class="btn">View Certificate ↗</a>
+          <span class="status-text"><span class="status-dot"></span> Core</span>
+        </div>
+      </article>
+
+      <!-- MTCNA -->
+      <article class="card" data-type="net">
+        <div class="pill">Networking</div>
+        <h2 class="title">MikroTik Certified Network Associate (MTCNA)</h2>
+        <div class="provider">PeopleNTech Institute of IT</div>
+        <div class="meta">Oct 2025 – Nov 2025 · 30 Hours</div>
+        <p class="description">
+          ISP-focused training on RouterOS. Covered bandwidth management (Queues), Firewall Filter rules, and Wireless setups.
+        </p>
+        <div class="tags">
+          <span class="tag">RouterOS</span>
+          <span class="tag">WinBox</span>
+          <span class="tag">ISP</span>
+        </div>
+        <div class="card-footer">
+          <a href="#" class="btn">View Certificate ↗</a>
+          <span class="status-text"><span class="status-dot"></span> ISP</span>
+        </div>
+      </article>
+
+      <!-- CCNA Next Gen -->
+      <article class="card" data-type="net">
+        <div class="pill">Engineering</div>
+        <h2 class="title">CCNA: Next-Gen Network Engineering</h2>
+        <div class="provider">Ostad</div>
+        <div class="meta">2025 · Completion Certificate</div>
+        <p class="description">
+          Advanced lab simulations focusing on large-scale Enterprise Topology Design and troubleshooting methodologies.
+        </p>
+        <div class="tags">
+          <span class="tag">Design</span>
+          <span class="tag">Simulation</span>
+        </div>
+        <div class="card-footer">
+          <a href="#" class="btn">View Certificate ↗</a>
+          <span class="status-text"><span class="status-dot"></span> Advanced</span>
+        </div>
+      </article>
+
+      <!-- CCNA Essentials -->
+      <article class="card" data-type="net">
+        <div class="pill">Fundamentals</div>
+        <h2 class="title">CCNA Networking Essentials</h2>
+        <div class="provider">Udemy · Meta Brains</div>
+        <div class="meta">Nov 13, 2025 · 4.5 Hours</div>
+        <p class="description">
+          Deep dive into the OSI Model, TCP/IP stack, IP addressing, and binary subnetting calculations.
+        </p>
+        <div class="tags">
+          <span class="tag">TCP/IP</span>
+          <span class="tag">Subnetting</span>
+        </div>
+        <div class="card-footer">
+          <a href="#" class="btn">View Certificate ↗</a>
+          <span class="status-text"><span class="status-dot"></span> Theory</span>
+        </div>
+      </article>
+
+      <!-- Excel -->
+      <article class="card" data-type="tool">
+        <div class="pill">Tools</div>
+        <h2 class="title">Excel Essentials for Productivity</h2>
+        <div class="provider">Passport to Earning · UNICEF</div>
+        <div class="meta">Nov 12, 2025</div>
+        <p class="description">
+          Data management for network logs, inventory tracking, and creating automated reports using formulas.
+        </p>
+        <div class="tags">
+          <span class="tag">Data</span>
+          <span class="tag">Reporting</span>
+        </div>
+        <div class="card-footer">
+          <a href="#" class="btn">View Certificate ↗</a>
+          <span class="status-text"><span class="status-dot"></span> Utility</span>
+        </div>
+      </article>
+
+      <!-- Soft Skills -->
+      <article class="card" data-type="soft">
+        <div class="pill">Soft Skills</div>
+        <h2 class="title">Workplace Communication Essentials</h2>
+        <div class="provider">Passport to Earning · UNICEF</div>
+        <div class="meta">Nov 12, 2025</div>
+        <p class="description">
+          Professional communication protocols, team collaboration strategies, and effective reporting.
+        </p>
+        <div class="tags">
+          <span class="tag">Communication</span>
+          <span class="tag">Teamwork</span>
+        </div>
+        <div class="card-footer">
+          <a href="#" class="btn">View Certificate ↗</a>
+          <span class="status-text"><span class="status-dot"></span> Pro</span>
+        </div>
+      </article>
+
+      <!-- Problem Solving -->
+      <article class="card" data-type="soft">
+        <div class="pill">Soft Skills</div>
+        <h2 class="title">Art of Problem Definition</h2>
+        <div class="provider">Passport to Earning · UNICEF</div>
+        <div class="meta">Nov 12, 2025</div>
+        <p class="description">
+          Critical thinking frameworks for identifying root causes of issues before attempting solutions.
+        </p>
+        <div class="tags">
+          <span class="tag">Logic</span>
+          <span class="tag">Analysis</span>
+        </div>
+        <div class="card-footer">
+          <a href="#" class="btn">View Certificate ↗</a>
+          <span class="status-text"><span class="status-dot"></span> Critical</span>
+        </div>
+      </article>
+
+       <!-- Cognitive -->
+       <article class="card" data-type="soft">
+        <div class="pill">Soft Skills</div>
+        <h2 class="title">Unleashing Cognitive Empowerment</h2>
+        <div class="provider">Passport to Earning · UNICEF</div>
+        <div class="meta">Nov 12, 2025</div>
+        <p class="description">
+          Productivity and focus strategies for continuous learning in high-pressure technical environments.
+        </p>
+        <div class="tags">
+          <span class="tag">Growth</span>
+          <span class="tag">Focus</span>
+        </div>
+        <div class="card-footer">
+          <a href="#" class="btn">View Certificate ↗</a>
+          <span class="status-text"><span class="status-dot"></span> Mindset</span>
+        </div>
+      </article>
+
+    </div>
+
+    <p class="footer-note">
+      // END OF RECORD //
+    </p>
+
+  </main>
+</body>
+</html>
